@@ -1,0 +1,1 @@
+gulp clean && rollup src\angular.js --config rollup.config.js --output angular.js && rollup src\angularjs.js --config rollup.config.js --output angularjs.js && rollup src\index.js --config rollup.config.js --output index.js && rollup src\vue.js --config rollup.config.js --output vue.js && npm pack

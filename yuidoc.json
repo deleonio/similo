@@ -1,0 +1,20 @@
+{
+  "options": {
+    "attributesEmit": true,
+    "linkNatives": true,
+    "markdown": true,
+    "outdir": "/var/www/html/jsdocs/nkp-kundenportal/",
+    "paths": [
+      "./src/app/components/",
+      "./src/app/services/",
+      "./src/app/types"
+    ],
+    "selleck": true,
+    "tabtospace": 2,
+    "themedir": "node_modules/yuidoc-theme-blue"
+  },
+  "name": "nkp-kundenportal",
+  "description": "Neues Kundenportal",
+  "version": "3.2.0-beta.14",
+  "url": "https://digip-build.inverso.local/npm"
+}

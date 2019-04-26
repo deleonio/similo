@@ -1,0 +1,12 @@
+[include]
+./src/**/*.js
+
+[ignore]
+.*/dist/.*
+.*/node_modules/.*
+.*spec.js
+
+*.spec.js
+
+[options]
+esproposal.class_instance_fields=enable
