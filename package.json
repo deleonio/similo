@@ -12,9 +12,10 @@
     "url": "http://gitlab.vpn.modevel.de/moppitz/similo.git"
   },
   "scripts": {
-    "eslint": "./node_modules/.bin/eslint ./src/",
-    "flow": "./node_modules/.bin/flow check",
-    "test": "./node_modules/.bin/karma start karma.conf.js"
+    "eslint": "eslint ./src/",
+    "flow": "flow check",
+    "test": "karma start karma.conf.js",
+    "install": "npm install --no-save && npm update --no-save && npm outdated"
   },
   "devDependencies": {
     "babel-core": "6.26.0",

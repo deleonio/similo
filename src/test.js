@@ -3,18 +3,6 @@
 import { ComponentDeclarationType } from './adapter/types';
 
 import {
-  Component,
-  Directive,
-  Injectable,
-  Inject,
-  Input,
-  Output,
-  Pipe
-} from '@angular/core';
-import {
-  VERSION
-} from '@angular/common';
-import {
   AdapterInterface
 } from './adapter/interface';
 import {
