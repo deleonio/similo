@@ -1,6 +1,6 @@
 // @flow
 
-import { ComponentDeclarationType, DirectiveDeclarationType, PipeDeclarationType } from './adapter/types';
+import type { ComponentDeclarationType, DirectiveDeclarationType, PipeDeclarationType } from './adapter/types';
 import { AdapterInterface } from './adapter/interface';
 import { Adapter } from './adapter';
 import { Injector } from './adapter/injector';

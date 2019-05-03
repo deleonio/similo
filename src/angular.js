@@ -1,6 +1,6 @@
 // @flow
 
-import { ComponentDeclarationType } from './adapter/types';
+import type { ComponentDeclarationType } from './adapter/types';
 
 import {
   Component,
@@ -26,7 +26,7 @@ export class AngularAdapter extends Adapter implements AdapterInterface {
   constructor() {
     super(null);
     this.name = 'Angular';
-    this.version = VERSION;
+    this.version = VERSION.full;
   }
 
   component(): Function {

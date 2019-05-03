@@ -1,6 +1,6 @@
 // @flow
 
-import type { ComponentDeclarationType } from './adapter/types';
+import type { ComponentDeclarationType, DirectiveDeclarationType, PipeDeclarationType } from './adapter/types';
 import { AdapterInterface } from './adapter/interface';
 import { Adapter } from './adapter';
 
@@ -134,6 +134,7 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
 
           this.framework
             .component(declaration.selector, {
+              // bindToController: true,
               bindings: declaration.bindings,
               controller: target,
               replace: declaration.replace,
@@ -313,7 +314,9 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
               return this[`${property}`];
             },
             set: function (value: Function) {
-              this[`${property}`] = value;
+              this[`${property}`] = {
+                emit: value
+              };
             }
           });
 
