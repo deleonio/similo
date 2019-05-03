@@ -62,7 +62,7 @@
     "webpack-stream": "4.0.0",
     "yuidoc-theme-blue": "0.1.9"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "@angular/common": ">=2 <6",
     "@angular/compiler": ">=2 <6",
     "@angular/core": ">=2 <6",
