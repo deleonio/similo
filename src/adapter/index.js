@@ -1,7 +1,6 @@
 // @flow
 
 export class Adapter {
-
   framework: any;
   name: string;
   version: string;
@@ -23,7 +22,7 @@ export class Adapter {
   }
 
   isString(any: any, minLength?: number = 0): boolean {
-    return typeof any === 'string' && any.length >= minLength;
+    return typeof any === "string" && any.length >= minLength;
   }
 
   isArray(any: any): boolean {
@@ -31,19 +30,20 @@ export class Adapter {
   }
 
   isObject(any: any): boolean {
-    return typeof any === 'object' && any !== null && this.isArray(any) === false;
+    return (
+      typeof any === "object" && any !== null && this.isArray(any) === false
+    );
   }
 
   debug(construct: string, declaration: any) {
-    console.log('Adapter', construct, declaration); // eslint-disable-line no-console
+    console.log("Adapter", construct, declaration); // eslint-disable-line no-console
   }
 
   info(message: string) {
-    console.info('Adapter', message); // eslint-disable-line no-console
+    console.info("Adapter", message); // eslint-disable-line no-console
   }
 
   warn(message: string) {
-    console.warn('Adapter', message); // eslint-disable-line no-console
+    console.warn("Adapter", message); // eslint-disable-line no-console
   }
-
 }

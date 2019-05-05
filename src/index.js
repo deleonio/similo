@@ -1,9 +1,8 @@
 // @flow
 
-import { AdapterInterface } from './adapter/interface';
+import { AdapterInterface } from "./adapter/interface";
 
-var
-  Component: Function,
+var Component: Function,
   Directive: Function,
   Framework: Object = {},
   Inject: Function,
