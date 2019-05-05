@@ -9,4 +9,5 @@
 *.spec.js
 
 [options]
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixIt
 esproposal.class_instance_fields=enable

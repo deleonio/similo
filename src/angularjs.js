@@ -101,7 +101,7 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
   toCamelCase(string: string): string {
     return string
       .replace(
-        /\-(.)/g,
+        /-(.)/g,
         ($1: string): string => {
           // eslint-disable-line no-useless-escape
           return $1.toUpperCase();
@@ -140,24 +140,26 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
           let params = this.getDependencyInjectionParams(target);
           let length = this.getDependencyInjectionLength(target);
           if (length !== target.$inject.length) {
+            // eslint-disable-next-line no-console
             console.warn(
               "Dependency-Injection-Length does not match Annotation-Length!",
               target.name,
               length,
               target.$inject,
               target
-            ); // eslint-disable-line no-console
+            );
           }
           if (
             this.getNodeEnv() === "Development" &&
             this.compareArrays(target.$inject, params) === false
           ) {
+            // eslint-disable-next-line no-console
             console.warn(
               "Dependency-Injection-Order does not match Annotation-Order!",
               target.name,
               target.$inject,
               params
-            ); // eslint-disable-line no-console
+            );
           }
 
           this.framework.component(declaration.selector, {
@@ -235,24 +237,26 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
               let params = this.getDependencyInjectionParams(target);
               let length = this.getDependencyInjectionLength(target);
               if (length !== target.$inject.length) {
+                // eslint-disable-next-line no-console
                 console.warn(
                   "Dependency-Injection-Length does not match Annotation-Length!",
                   target.name,
                   length,
                   target.$inject,
                   target
-                ); // eslint-disable-line no-console
+                );
               }
               if (
                 this.getNodeEnv() === "Development" &&
                 this.compareArrays(target.$inject, params) === false
               ) {
+                // eslint-disable-next-line no-console
                 console.warn(
                   "Dependency-Injection-Order does not match Annotation-Order!",
                   target.name,
                   target.$inject,
                   params
-                ); // eslint-disable-line no-console
+                );
               }
 
               this.framework.service(identifier, target);
@@ -354,7 +358,8 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
     return (declaration: PipeDeclarationType): Function => {
       return (): any => {
         this.debug("Pipe", declaration);
-        console.warn("Pipe decorator currently not implemented!"); // eslint-disable-line no-console
+        // eslint-disable-next-line no-console
+        console.warn("Pipe decorator currently not implemented!");
         this.bindings = {};
       };
     };
