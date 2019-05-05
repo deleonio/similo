@@ -283,8 +283,10 @@ export class VueAdapter extends Adapter implements AdapterInterface {
         // this.debug('Output', property);
 
         if (typeof property === "string" && property.length > 0) {
+          // $$FlowFixIt
           this.bindings[`(${property})`] = "&";
           if (optional === true) {
+            // $$FlowFixIt
             this.bindings[`(${property})`] += "?";
           }
 

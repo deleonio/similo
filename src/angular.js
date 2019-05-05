@@ -10,7 +10,9 @@ import {
   Input,
   Output,
   Pipe
+  // $$FlowFixIt
 } from "@angular/core";
+// $$FlowFixIt
 import { VERSION } from "@angular/common";
 import { AdapterInterface } from "./adapter/interface";
 import { Adapter } from "./adapter";
