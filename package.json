@@ -1,6 +1,6 @@
 {
   "name": "similo",
-  "version": "1.4.0-beta.0",
+  "version": "1.4.0-beta.1",
   "description": "Be flexible with single-page application (SPA) frameworks. Similo is a framework adapter based on the similarities of AngularJS, Angular (, Aurelia) and Vue.",
   "main": "index.js",
   "author": {
