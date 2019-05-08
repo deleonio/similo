@@ -14,6 +14,8 @@
   "scripts": {
     "eslint": "eslint ./src/",
     "flow": "flow check",
+    "postpack": "rm -rf adapter index.js angular.js angularjs.js vue.js test.js",
+    "prepack": "cp -r src/* ./",
     "update": "npm install --no-save && npm update --no-save && npm outdated"
   },
   "devDependencies": {
