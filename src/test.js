@@ -1,13 +1,13 @@
 // @flow
 
-import { AdapterInterface } from "./adapter/interface";
-import { Adapter } from "./adapter";
+import { AdapterInterface } from './adapter/interface';
+import { Adapter } from './adapter';
 
 export class TestAdapter extends Adapter implements AdapterInterface {
   constructor() {
     super(null);
-    this.name = "Test";
-    this.version = "0.0.0";
+    this.name = 'Test';
+    this.version = '0.0.0';
   }
 
   component(): Function {
