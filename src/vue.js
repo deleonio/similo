@@ -6,7 +6,6 @@ import { Adapter } from './adapter';
 import { Injector } from './adapter/injector';
 
 // AngularJS-Mocks
-
 function Filter(): Function {
   return () => {};
 }

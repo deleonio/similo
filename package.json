@@ -1,6 +1,6 @@
 {
   "name": "similo",
-  "version": "1.4.0-beta.1",
+  "version": "1.4.0-beta.2",
   "description": "Be flexible with single-page application (SPA) frameworks. Similo is a framework adapter based on the similarities of AngularJS, Angular (, Aurelia) and Vue.",
   "main": "index.js",
   "author": {
@@ -19,11 +19,12 @@
   "devDependencies": {
     "babel-eslint": "10.0.1",
     "eslint": "5.16.0",
-    "eslint-plugin-flowtype": "3.7.0",
+    "eslint-plugin-flowtype": "3.9.0",
     "eslint-plugin-jasmine": "2.10.1",
     "eslint-plugin-json": "1.4.0",
     "eslint-plugin-mocha": "5.3.0",
+    "eslint-plugin-prettier": "3.1.0",
     "flow-bin": "0.98.1",
-    "prettier": "1.17.0"
+    "prettier": "1.17.1"
   }
 }

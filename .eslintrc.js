@@ -9,7 +9,7 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:flowtype/recommended"],
   globals: {},
   parser: "babel-eslint",
-  plugins: ["flowtype", "jasmine", "json"],
+  plugins: ["flowtype", "jasmine", "json", "mocha", "prettier"],
   rules: {
     "flowtype/boolean-style": [2, "boolean"],
     "flowtype/define-flow-type": 1,
