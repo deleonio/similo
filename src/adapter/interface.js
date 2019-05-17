@@ -13,5 +13,5 @@ export interface AdapterInterface {
   output(): Function;
   pipe(): Function;
   name: string;
-  version: string;
+  version: string
 }

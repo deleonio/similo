@@ -1,6 +1,6 @@
 // @flow
 
-import { AdapterInterface } from './adapter/interface';
+import { AdapterInterface } from "./adapter/interface";
 
 var Component: Function,
   Directive: Function,
@@ -23,4 +23,13 @@ export function configure(adapter: AdapterInterface) {
   Pipe = adapter.pipe();
 }
 
-export { Component, Directive, Framework, Inject, Injectable, Input, Output, Pipe };
+export {
+  Component,
+  Directive,
+  Framework,
+  Inject,
+  Injectable,
+  Input,
+  Output,
+  Pipe
+};
