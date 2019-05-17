@@ -13,18 +13,23 @@
   },
   "scripts": {
     "eslint": "eslint ./src/",
+<<<<<<< HEAD
     "flow": "flow check",
     "postpack": "rm -rf adapter index.js angular.js angularjs.js vue.js test.js",
     "prepack": "cp -r src/* ./",
+=======
+    "flow": "flow checki --show-all-errors",
+>>>>>>> ab032247943064fe6b0b1b9b8e5238d223f78fc7
     "update": "npm install --no-save && npm update --no-save && npm outdated"
   },
   "devDependencies": {
+    "babel-eslint": "10.0.1",
     "eslint": "5.16.0",
     "eslint-plugin-flowtype": "3.7.0",
     "eslint-plugin-jasmine": "2.10.1",
     "eslint-plugin-json": "1.4.0",
     "eslint-plugin-mocha": "5.3.0",
-    "flow-bin": "0.98.0",
+    "flow-bin": "0.98.1",
     "prettier": "1.17.0"
   }
 }
