@@ -99,9 +99,11 @@ export class VueAdapter extends Adapter implements AdapterInterface {
             declaration.template = declaration.template.replace(/ ng-model="/g, ' v-model="');
             declaration.template = declaration.template.replace(/ ng-show="/g, ' v-show="');
             declaration.template = declaration.template.replace(/ ng-submit/g, ' @submit.prevent');
+            declaration.template = declaration.template.replace(/(<\/?)ng-transclude>/g, '$1slot>');
             // declaration.template = declaration.template.replace(/ ng-/g, ' v-bind:');
             declaration.template = declaration.template.replace(/ui-view/g, 'router-view');
             declaration.template = declaration.template.replace(/ ([a-z-]+)="\{\{([a-z.]+)\}\}"/gi, ' v-bind:$1="$2"');
+            declaration.template = declaration.template.replace(/ ([^= ]+)="{{ *([^} ]+) *}}"/g, ' :$1="$2"');
           }
           console.log(declaration.template); // eslint-disable-line no-console
 
