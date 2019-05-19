@@ -1,10 +1,13 @@
 // @flow
 
-import type { ComponentDeclarationType, DirectiveDeclarationType, PipeDeclarationType } from './adapter/types';
-import { AdapterInterface } from './adapter/interface';
-import { Adapter } from './adapter';
-import { Injector } from './adapter/injector';
-import injector from 'vue-inject';
+import type {
+  ComponentDeclarationType,
+  DirectiveDeclarationType,
+  PipeDeclarationType
+} from "./adapter/types";
+import { AdapterInterface } from "./adapter/interface";
+import { Adapter } from "./adapter";
+import { Injector } from "./adapter/injector";
 
 function getInjects(injector: Injector, injects: string[]): any[] {
   let services: any[] = [];
@@ -34,6 +37,159 @@ function StateParams(): Object {
   return {};
 }
 
+function filterDataAndMethods(
+  object: Object,
+  data: Object = {},
+  methods: Object = {}
+): Object {
+  Object.getOwnPropertyNames(object).forEach((property: string) => {
+    if (object.hasOwnProperty(property)) {
+      if (typeof object[property] === "function") {
+        if (
+          [
+            "constructor",
+            "__defineGetter__",
+            "__defineSetter__",
+            "__lookupGetter__",
+            "__lookupSetter__"
+          ].indexOf(property) === -1
+        ) {
+          methods[property] = object[property];
+        }
+      } else if (this.bindings.indexOf(property) === -1) {
+        data[property] = object[property];
+      }
+    }
+  });
+  if (
+    typeof object.__proto__ === "object" &&
+    object.__proto__ !== null &&
+    Array.isArray(object.__proto__) === false &&
+    typeof object.__proto__.constructor === "function"
+  ) {
+    return filterDataAndMethods(object.__proto__, data, methods);
+  } else {
+    return {
+      data: data,
+      methods: methods
+    };
+  }
+}
+
+function registerComponent(
+  framework: Object,
+  injector: Injector,
+  bindings: any[],
+  injects: any[],
+  declaration: ComponentDeclarationType,
+  target: Function
+) {
+  if (typeof declaration.template === "string") {
+    declaration.template = declaration.template.replace(
+      / \[([a-z-]*)\]="/gi,
+      ' v-bind:$1="'
+    );
+    declaration.template = declaration.template.replace(
+      / \(([a-z-]*)\)="/gi,
+      ' v-on:$1="'
+    );
+    declaration.template = declaration.template.replace(/\$ctrl\./g, "");
+    declaration.template = declaration.template.replace(/\{\{::/g, "{{");
+    declaration.template = declaration.template.replace(
+      / ng-change="/g,
+      ' v-change="'
+    );
+    declaration.template = declaration.template.replace(
+      / ng-class="/g,
+      ' v-bind:class="'
+    );
+    declaration.template = declaration.template.replace(
+      / ng-style="/g,
+      ' v-bind:style="'
+    );
+    declaration.template = declaration.template.replace(/ ng-if="/g, ' v-if="');
+    declaration.template = declaration.template.replace(
+      / ng-model="/g,
+      ' v-model="'
+    );
+    declaration.template = declaration.template.replace(
+      / ng-show="/g,
+      ' v-show="'
+    );
+    declaration.template = declaration.template.replace(
+      / ng-submit/g,
+      " @submit.prevent"
+    );
+    declaration.template = declaration.template.replace(
+      /(<\/?)ng-transclude>/g,
+      "$1slot>"
+    );
+    // declaration.template = declaration.template.replace(/ ng-/g, ' v-bind:');
+    declaration.template = declaration.template.replace(
+      /ui-view/g,
+      "router-view"
+    );
+    declaration.template = declaration.template.replace(
+      / ([a-z-]+)="\{\{([a-z.]+)\}\}"/gi,
+      ' v-bind:$1="$2"'
+    );
+    declaration.template = declaration.template.replace(
+      / ([^= ]+)="{{ *([^} ]+) *}}"/g,
+      ' :$1="$2"'
+    );
+  }
+  console.log(declaration.template); // eslint-disable-line no-console
+
+  var component;
+  if (Array.isArray(injects[target])) {
+    component = new target(...getInjects(injector, injects[target]));
+  } else {
+    component = new target();
+  }
+
+  console.log("Component", component); // eslint-disable-line no-console
+
+  let api = filterDataAndMethods(component),
+    props = {};
+
+  bindings.forEach((binding: string) => {
+    if (component.hasOwnProperty(binding)) {
+      props[binding] = {
+        default(): any {
+          return component[binding];
+        }
+      };
+    }
+  });
+
+  framework.component(declaration.selector, {
+    beforeCreate() {
+      if (typeof component.ngOnInit === "function") {
+        component.ngOnInit(this);
+      }
+    },
+    beforeUpdate() {
+      if (typeof component.ngOnChanges === "function") {
+        component.ngOnChanges(this);
+      }
+    },
+    data(): Object {
+      return api.data;
+    },
+    methods: api.methods,
+    // name: declaration.selector,
+    props: props,
+    template: declaration.template
+  });
+}
+
+const TO_REGISTER_COMPONENTS: any[] = [];
+export function registerTheComponents() {
+  TO_REGISTER_COMPONENTS.forEach((declaration: any) =>  {
+    registerComponent(...declaration);
+  });
+}
+
 export class VueAdapter extends Adapter implements AdapterInterface {
   components: string[] = [];
   bindings: string[] = [];
@@ -45,122 +201,40 @@ export class VueAdapter extends Adapter implements AdapterInterface {
 
   constructor(Vue: any) {
     super(Vue);
-    this.injector.register('$filter', Filter);
-    this.injector.register('$http', Http);
-    this.injector.register('$rootScope', RootScope);
-    this.injector.register('$scope', Scope);
-    this.injector.register('$state', State);
-    this.injector.register('$stateParams', StateParams);
-    this.name = 'Vue';
+    this.injector.register("$filter", Filter);
+    this.injector.register("$http", Http);
+    this.injector.register("$rootScope", RootScope);
+    this.injector.register("$scope", Scope);
+    this.injector.register("$state", State);
+    this.injector.register("$stateParams", StateParams);
+    this.name = "Vue";
     this.version = Vue.version;
-  }
-
-  filterDataAndMethods(object: Object, data: Object = {}, methods: Object = {}): Object {
-    Object.getOwnPropertyNames(object).forEach((property: string) => {
-      if (object.hasOwnProperty(property)) {
-        if (typeof object[property] === 'function') {
-          if (
-            ['constructor', '__defineGetter__', '__defineSetter__', '__lookupGetter__', '__lookupSetter__'].indexOf(
-              property
-            ) === -1
-          ) {
-            methods[property] = object[property];
-          }
-        } else if (this.bindings.indexOf(property) === -1) {
-          data[property] = object[property];
-        }
-      }
-    });
-    if (
-      typeof object.__proto__ === 'object' &&
-      object.__proto__ !== null &&
-      Array.isArray(object.__proto__) === false &&
-      typeof object.__proto__.constructor === 'function'
-    ) {
-      return this.filterDataAndMethods(object.__proto__, data, methods);
-    } else {
-      return {
-        data: data,
-        methods: methods
-      };
-    }
   }
 
   component(): Function {
     return (declaration: ComponentDeclarationType): Function => {
       return (target: Function): any => {
-        this.debug('Component', declaration.selector);
-        this.debug('Component', this.bindings);
+        this.debug("Component", declaration.selector);
+        this.debug("Component", this.bindings);
 
         let indexOf: number = this.components.indexOf(declaration.selector);
         if (indexOf < 0) {
           this.components.push(declaration.selector);
-
-          if (typeof declaration.template === 'string') {
-            declaration.template = declaration.template.replace(/ \[([a-z-]*)\]="/gi, ' v-bind:$1="');
-            declaration.template = declaration.template.replace(/ \(([a-z-]*)\)="/gi, ' v-on:$1="');
-            declaration.template = declaration.template.replace(/\$ctrl\./g, '');
-            declaration.template = declaration.template.replace(/\{\{::/g, '{{');
-            declaration.template = declaration.template.replace(/ ng-change="/g, ' v-change="');
-            declaration.template = declaration.template.replace(/ ng-class="/g, ' v-bind:class="');
-            declaration.template = declaration.template.replace(/ ng-style="/g, ' v-bind:style="');
-            declaration.template = declaration.template.replace(/ ng-if="/g, ' v-if="');
-            declaration.template = declaration.template.replace(/ ng-model="/g, ' v-model="');
-            declaration.template = declaration.template.replace(/ ng-show="/g, ' v-show="');
-            declaration.template = declaration.template.replace(/ ng-submit/g, ' @submit.prevent');
-            declaration.template = declaration.template.replace(/(<\/?)ng-transclude>/g, '$1slot>');
-            // declaration.template = declaration.template.replace(/ ng-/g, ' v-bind:');
-            declaration.template = declaration.template.replace(/ui-view/g, 'router-view');
-            declaration.template = declaration.template.replace(/ ([a-z-]+)="\{\{([a-z.]+)\}\}"/gi, ' v-bind:$1="$2"');
-            declaration.template = declaration.template.replace(/ ([^= ]+)="{{ *([^} ]+) *}}"/g, ' :$1="$2"');
-          }
-          console.log(declaration.template); // eslint-disable-line no-console
-
-          var component;
-          if (Array.isArray(this.injects[target])) {
-            component = new target(...getInjects(this.injector, this.injects[target]));
-          } else {
-            component = new target();
-          }
-
-          this.debug('Component', component);
-
-          let api = this.filterDataAndMethods(component),
-            props = {};
-
-          this.bindings.forEach((binding: string) => {
-            if (component.hasOwnProperty(binding)) {
-              props[binding] = {
-                default(): any {
-                  return component[binding];
-                }
-              };
-            }
-          });
-
-          this.framework.component(declaration.selector, {
-            beforeCreate() {
-              if (typeof component.ngOnInit === 'function') {
-                component.ngOnInit(this);
-              }
-            },
-            beforeUpdate() {
-              if (typeof component.ngOnChanges === 'function') {
-                component.ngOnChanges(this);
-              }
-            },
-            data(): Object {
-              return api.data;
-            },
-            methods: api.methods,
-            // name: declaration.selector,
-            props: props,
-            template: declaration.template
-          });
+          TO_REGISTER_COMPONENTS.push([
+            this.framework,
+            this.injector,
+            ...this.bindings,
+            ...this.injects,
+            declaration,
+            target
+          ]);
         } else {
-          this.warn(`Multiple component selector '${declaration.selector}' =/= '${this.components[indexOf]}'.`);
+          this.warn(
+            `Multiple component selector '${declaration.selector}' =/= '${
+              this.components[indexOf]
+            }'.`
+          );
         }
-
         this.bindings = [];
       };
     };
@@ -169,8 +243,8 @@ export class VueAdapter extends Adapter implements AdapterInterface {
   directive(): Function {
     return (declaration: DirectiveDeclarationType): Function => {
       return (): any => {
-        this.debug('Directive', declaration);
-        console.warn('Directive decorator currently not implemented!'); // eslint-disable-line no-console
+        this.debug("Directive", declaration);
+        console.warn("Directive decorator currently not implemented!"); // eslint-disable-line no-console
       };
     };
   }
@@ -178,7 +252,7 @@ export class VueAdapter extends Adapter implements AdapterInterface {
   inject(): Function {
     return (identifier: string): Function => {
       return (target: Function, property: any, descriptor: any): any => {
-        this.debug('Inject', identifier);
+        this.debug("Inject", identifier);
 
         var injector = this.injector;
 
@@ -190,7 +264,7 @@ export class VueAdapter extends Adapter implements AdapterInterface {
         descriptor.initializer = descriptor.get;
         descriptor.writable = true;
 
-        if (typeof identifier === 'string' && identifier.length > 0) {
+        if (typeof identifier === "string" && identifier.length > 0) {
           if (this.injects.hasOwnProperty(target.constructor) === false) {
             this.injects[target.constructor] = [];
           }
@@ -207,10 +281,14 @@ export class VueAdapter extends Adapter implements AdapterInterface {
   injectable(): Function {
     return (identifier?: string): Function => {
       return (target: Function): any => {
-        if (typeof identifier !== 'string' && typeof target === 'function' && typeof target.name === 'string') {
+        if (
+          typeof identifier !== "string" &&
+          typeof target === "function" &&
+          typeof target.name === "string"
+        ) {
           identifier = target.name;
         }
-        if (typeof identifier === 'string') {
+        if (typeof identifier === "string") {
           this.injector.register(identifier, target);
         } else {
           throw new Error(`A service has no identifier!`);
@@ -224,9 +302,9 @@ export class VueAdapter extends Adapter implements AdapterInterface {
       return (target: Function, property: any, descriptor: any): any => {
         // eslint-disable-line no-unused-vars
 
-        this.debug('Input', arguments);
+        this.debug("Input", arguments);
 
-        if (typeof property === 'string' && property.length > 0) {
+        if (typeof property === "string" && property.length > 0) {
           this.bindings.push(property);
         } else {
           this.warn(`No valid property by @Input().`);
@@ -248,12 +326,12 @@ export class VueAdapter extends Adapter implements AdapterInterface {
 
         // this.debug('Output', property);
 
-        if (typeof property === 'string' && property.length > 0) {
+        if (typeof property === "string" && property.length > 0) {
           // $$FlowFixIt
-          this.bindings[`(${property})`] = '&';
+          this.bindings[`(${property})`] = "&";
           if (optional === true) {
             // $$FlowFixIt
-            this.bindings[`(${property})`] += '?';
+            this.bindings[`(${property})`] += "?";
           }
 
           Object.defineProperty(target, `(${property})`, {
@@ -278,8 +356,8 @@ export class VueAdapter extends Adapter implements AdapterInterface {
   pipe(): Function {
     return (declaration: PipeDeclarationType): Function => {
       return (): any => {
-        this.debug('Pipe', declaration);
-        console.warn('Pipe decorator currently not implemented!'); // eslint-disable-line no-console
+        this.debug("Pipe", declaration);
+        console.warn("Pipe decorator currently not implemented!"); // eslint-disable-line no-console
       };
     };
   }
