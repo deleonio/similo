@@ -39,6 +39,7 @@ function StateParams(): Object {
 
 function filterDataAndMethods(
   object: Object,
+  bindings: any[],
   data: Object = {},
   methods: Object = {}
 ): Object {
@@ -56,7 +57,7 @@ function filterDataAndMethods(
         ) {
           methods[property] = object[property];
         }
-      } else if (this.bindings.indexOf(property) === -1) {
+      } else if (bindings.indexOf(property) === -1) {
         data[property] = object[property];
       }
     }
@@ -67,7 +68,7 @@ function filterDataAndMethods(
     Array.isArray(object.__proto__) === false &&
     typeof object.__proto__.constructor === "function"
   ) {
-    return filterDataAndMethods(object.__proto__, data, methods);
+    return filterDataAndMethods(object.__proto__, bindings, data, methods);
   } else {
     return {
       data: data,
@@ -149,7 +150,7 @@ function registerComponent(
 
   console.log("Component", component); // eslint-disable-line no-console
 
-  let api = filterDataAndMethods(component),
+  let api = filterDataAndMethods(component, bindings),
     props = {};
 
   bindings.forEach((binding: string) => {
@@ -223,8 +224,8 @@ export class VueAdapter extends Adapter implements AdapterInterface {
           TO_REGISTER_COMPONENTS.push([
             this.framework,
             this.injector,
-            ...this.bindings,
-            ...this.injects,
+            this.bindings,
+            this.injects,
             declaration,
             target
           ]);
