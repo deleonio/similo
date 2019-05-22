@@ -1,0 +1,11 @@
+{
+  "spec_dir": "test",
+  "spec_files": ["**/*[sS]pec.js"],
+  "helpers": [
+    "../node_modules/@babel/register/lib/node.js",
+    "../node_modules/jsdom/lib/api.js",
+    "../node_modules/esm/esm.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": true
+}
