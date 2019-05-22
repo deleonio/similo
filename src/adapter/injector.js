@@ -5,44 +5,34 @@ export class Injector {
 
   register(identifier: string, service: Function) {
     if (
-      typeof identifier === "string" &&
+      typeof identifier === 'string' &&
       this.services.hasOwnProperty(identifier) === false &&
-      typeof service === "function"
+      typeof service === 'function'
     ) {
       this.services[identifier] = {
         instance: null,
         object: service
       };
     } else {
-      throw new Error(
-        `[Similo] The service '${identifier}' could not registered!`
-      );
+      throw new Error(`[Similo] The service '${identifier}' could not registered!`);
     }
   }
 
   get(identifier: string): any {
     if (
-      typeof identifier === "string" &&
+      typeof identifier === 'string' &&
       this.services.hasOwnProperty(identifier) === true &&
-      typeof this.services[identifier] === "object" &&
+      typeof this.services[identifier] === 'object' &&
       this.services[identifier] !== null &&
       Array.isArray(this.services[identifier]) === false &&
-      typeof this.services[identifier].object === "function"
+      typeof this.services[identifier].object === 'function'
     ) {
-      if (
-        this.services[identifier].instance instanceof
-          this.services[identifier].object ===
-        false
-      ) {
-        this.services[identifier].instance = new this.services[
-          identifier
-        ].object();
+      if (this.services[identifier].instance instanceof this.services[identifier].object === false) {
+        this.services[identifier].instance = new this.services[identifier].object();
       }
       return this.services[identifier].instance;
     } else {
-      throw new Error(
-        `[Similo] The service '${identifier}' is not registered!`
-      );
+      throw new Error(`[Similo] The service '${identifier}' is not registered!`);
     }
   }
 }
