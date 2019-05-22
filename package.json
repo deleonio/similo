@@ -42,12 +42,13 @@
   "scripts": {
     "eslint": "eslint ./src/",
     "flow": "flow checki --show-all-errors",
-    "coverage": "cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text npm run test",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text npm test",
     "jasmine": "cross-env NODE_ENV=test jasmine",
     "mocha": "cross-env NODE_ENV=test mocha",
     "test": "cross-env NODE_ENV=test npm run jasmine && npm run mocha",
     "postpack": "rm -rf adapter index.js angular.js angularjs.js vue.js test.js",
     "prepack": "cp -r src/* ./",
-    "update": "npm install --no-save && npm update --no-save && npm outdated"
+    "update": "npm install --no-save && npm update --no-save && npm outdated",
+    "reinstall": "rm -rf node_modules package-lock.json && npm run update"
   }
 }
