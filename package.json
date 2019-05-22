@@ -12,23 +12,16 @@
     "type": "git",
     "url": "https://github.com/martinoppitz/similo"
   },
-  "scripts": {
-    "eslint": "eslint ./src/",
-    "flow": "flow checki --show-all-errors",
-    "coverage": "nyc npm run test",
-    "jasmine": "jasmine",
-    "mocha": "mocha",
-    "test": "npm run jasmine && npm run mocha",
-    "postpack": "rm -rf adapter index.js angular.js angularjs.js vue.js test.js",
-    "prepack": "cp -r src/* ./",
-    "update": "npm install --no-save && npm update --no-save && npm outdated"
-  },
   "devDependencies": {
     "@babel/core": "7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/plugin-proposal-private-methods": "7.4.4",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-flow": "7.0.0",
     "@babel/register": "7.4.4",
     "babel-eslint": "10.0.1",
+    "babel-plugin-istanbul": "5.1.4",
+    "cross-env": "5.2.0",
     "eslint": "5.16.0",
     "eslint-plugin-flowtype": "3.9.0",
     "eslint-plugin-jasmine": "2.10.1",
@@ -39,39 +32,22 @@
     "flow-bin": "0.98.1",
     "jasmine": "3.4.0",
     "jsdom": "15.1.0",
+    "jsdom-global": "3.0.2",
     "mocha": "6.1.4",
     "nock": "10.0.6",
     "nyc": "14.1.1",
     "prettier": "1.17.1",
     "sinon": "7.3.2"
   },
-  "nyc": {
-    "reporter": [
-      "html"
-    ],
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "**/*.spec.js"
-    ],
-    "watermarks": {
-      "lines": [
-        80,
-        95
-      ],
-      "functions": [
-        80,
-        95
-      ],
-      "branches": [
-        80,
-        95
-      ],
-      "statements": [
-        80,
-        95
-      ]
-    }
+  "scripts": {
+    "eslint": "eslint ./src/",
+    "flow": "flow checki --show-all-errors",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text npm run test",
+    "jasmine": "cross-env NODE_ENV=test jasmine",
+    "mocha": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test npm run jasmine && npm run mocha",
+    "postpack": "rm -rf adapter index.js angular.js angularjs.js vue.js test.js",
+    "prepack": "cp -r src/* ./",
+    "update": "npm install --no-save && npm update --no-save && npm outdated"
   }
 }
