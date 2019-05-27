@@ -9,4 +9,10 @@ describe('Teste Adapter', () => {
     let adapter: Adapter = new Adapter();
     assert(adapter instanceof Adapter);
   });
+
+  it('framework', () => {
+    let framework: any = {};
+    let adapter: Adapter = new Adapter(framework);
+    assert(adapter.framework === framework);
+  });
 });
