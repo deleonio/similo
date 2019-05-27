@@ -11,7 +11,6 @@ export class AngularJsAdapter extends Adapter implements AdapterInterface {
   injectables: string[] = [];
   injects: Object = {};
   pipes: string[] = [];
-  version: string;
 
   constructor(angular: any, name?: string = 'angularjs', dependencies?: Array<string> = []) {
     super(angular.module(name, dependencies));
