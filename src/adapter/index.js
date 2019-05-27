@@ -1,12 +1,33 @@
 // @flow
 
 export class Adapter {
-  framework: any;
-  name: string;
-  version: string;
+  #framework: any;
+  #name: string;
+  #version: string;
 
   constructor(framework: any) {
     this.framework = framework;
+  }
+
+  set framework(value: any) {
+    this.#framework = value;
+  }
+  get framework(): any {
+    return this.#framework;
+  }
+
+  set name(value: string) {
+    this.#name = value;
+  }
+  get name(): string {
+    return this.#name;
+  }
+
+  set version(value: string) {
+    this.#version = value;
+  }
+  get version(): string {
+    return this.#version;
   }
 
   getNodeEnv(): any {
