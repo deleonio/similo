@@ -1,31 +1,31 @@
 module.exports = {
   plugins: [
     [
-      "@babel/plugin-proposal-private-methods",
+      '@babel/plugin-proposal-private-methods',
       {
         loose: true
       }
     ],
     [
-      "@babel/plugin-proposal-class-properties",
+      '@babel/plugin-proposal-class-properties',
       {
         loose: true
       }
     ],
-    "@babel/plugin-transform-flow-strip-types"
+    '@babel/plugin-transform-flow-strip-types'
   ],
   presets: [
     [
-      "@babel/preset-env",
+      '@babel/preset-env',
       {
         corejs: 3,
-        useBuiltIns: "entry"
+        useBuiltIns: 'entry'
       }
     ]
   ],
   env: {
     test: {
-      plugins: ["istanbul"]
+      plugins: ['istanbul']
     }
   },
   sourceMaps: true,

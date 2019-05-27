@@ -5,11 +5,7 @@ module.exports = {
   // opts: './test/mocha.opts',
   package: './package.json',
   reporter: 'spec',
-  require: [
-    '@babel/register',
-    'jsdom-global/register',
-    'esm'
-  ],
+  require: ['@babel/register', 'jsdom-global/register', 'esm'],
   slow: 75,
   timeout: 2000,
   ui: 'bdd'

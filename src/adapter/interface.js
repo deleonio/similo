@@ -1,9 +1,5 @@
 // @flow
 
-/**
- * @export
- * @interface AdapterInterface
- */
 export interface AdapterInterface {
   component(): Function;
   directive(): Function;

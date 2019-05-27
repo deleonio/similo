@@ -1,9 +1,4 @@
 // @flow
-
-/**
- * @export
- * @type ComponentDeclarationType
- */
 export type ComponentDeclarationType = {
   bindings?: Object,
   controller: Function,
@@ -14,19 +9,11 @@ export type ComponentDeclarationType = {
   transclude?: boolean
 };
 
-/**
- * @export
- * @type DirectiveDeclarationType
- */
 export type DirectiveDeclarationType = {
   controller: Function,
   selector: string
 };
 
-/**
- * @export
- * @type PipeDeclarationType
- */
 export type PipeDeclarationType = {
   controller: Function,
   selector: string
