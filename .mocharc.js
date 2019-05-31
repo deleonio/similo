@@ -1,6 +1,6 @@
 module.exports = {
   diff: true,
-  spec: 'test/**/*.spec.js',
+  spec: 'test/unit/**/*.spec.js',
   extension: ['js'],
   // opts: './test/mocha.opts',
   package: './package.json',
