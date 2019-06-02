@@ -6,7 +6,4 @@ reports/
 tests_output/
 package-lock.json
 *.tgz
-geckodriver.log
-chromedriver.log
-debug.log
-selenium-server.log
+*.log
