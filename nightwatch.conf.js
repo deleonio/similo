@@ -17,6 +17,7 @@ module.exports = {
   test_settings: {
     chrome: {
       launch_url: 'https://www.google.com',
+      egal: true,
       webdriver: {
         server_path: 'node_modules\\.bin\\chromedriver.cmd',
         cli_args: ['--verbose'],
@@ -32,7 +33,7 @@ module.exports = {
       }
     },
     firefox: {
-      launch_url: 'https://www.yahoo.com',
+      launch_url: 'https://www.google.com',
       webdriver: {
         server_path: 'node_modules\\.bin\\geckodriver.cmd',
         port: 4444
