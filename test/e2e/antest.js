@@ -1,7 +1,7 @@
 module.exports = {
-  'Demo test Google' : function (browser) {
+  'Demo test Google': (browser) => {
     browser
-      .url('https://www.google.com')
+      .url(browser.launch_url)
       .waitForElementVisible('body')
       .setValue('input[type=text]', 'nightwatch')
       .waitForElementVisible('input[name=btnK]')
