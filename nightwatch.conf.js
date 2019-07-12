@@ -6,6 +6,7 @@ const seleniumServerStandalone = require('selenium-server-standalone-jar');
 module.exports = {
   src_folders: ['./test/e2e'],
   output_folder: './test/e2e/reports',
+  globals_path: './nightwatch.global.js',
   webdriver: {
     start_process: true
   },
@@ -36,16 +37,17 @@ module.exports = {
       },
       desiredCapabilities: {
         browserName: 'chrome',
-        loggingPrefs: {
-          driver: 'INFO',
-          server: 'OFF',
-          browser: 'INFO'
+        javascriptEnabled: true,
+        acceptSslCerts: true,
+        chromeOptions: {
+          args: ['--incognito', '--no-sandbox']
         }
       }
     },
     firefox: {
       webdriver: {
         server_path: geckodriver.path,
+        cli_args: ['--verbose'],
         port: 4444
       },
       desiredCapabilities: {
@@ -77,8 +79,7 @@ module.exports = {
       selenium: {
         start_process: true,
         host: 'localhost',
-        // server_path: seleniumServerStandalone.path,
-        server_path: 'selenium-server-standalone-3.141.59.jar',
+        server_path: seleniumServerStandalone.path,
         port: 4444,
         cli_args: {
           'webdriver.chrome.driver': chromedriver.path,
@@ -92,20 +93,11 @@ module.exports = {
         javascriptEnabled: true,
         acceptSslCerts: true,
         chromeOptions: {
-          args: ['no-sandbox']
-        },
-        loggingPrefs: { driver: 'INFO', server: 'OFF', browser: 'INFO' }
+          args: ['--incognito', '--no-sandbox']
+        }
+        // browserName: 'firefox'
+        // browserName: 'MicrosoftEdge'
       }
-      // desiredCapabilities: {
-      //   browserName: 'firefox',
-      //   acceptInsecureCerts: true
-      // }
-      // desiredCapabilities: {
-      //   browserName: 'MicrosoftEdge',
-      //   javascriptEnabled: true,
-      //   acceptSslCerts: true,
-      //   nativeEvents: true
-      // }
     },
     seleniumGrid: {
       webdriver: {
