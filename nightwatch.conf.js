@@ -56,11 +56,15 @@ module.exports = {
           'webdriver.chrome.driver': chromedriver.path,
           'webdriver.edge.driver': 'msedgedriver.exe',
           'webdriver.gecko.driver': geckodriver.path,
-          'webdriver.ie.driver': 'IEDriverServer.exe'
+          'webdriver.ie.driver': 'IEDriverServer32.exe'
         }
       },
       // desiredCapabilities: DESIRED_CAPABILITIES_CHROME
-      desiredCapabilities: DESIRED_CAPABILITIES_FIREFOX
+      // desiredCapabilities: DESIRED_CAPABILITIES_FIREFOX,
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+        acceptSslCerts: true
+      }
     },
     seleniumGrid: {
       webdriver: {

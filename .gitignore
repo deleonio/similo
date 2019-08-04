@@ -1,5 +1,7 @@
 .nyc_output/
 .vscode/
+app/dist/
+app/node_modules/
 coverage/
 node_modules/
 reports/
