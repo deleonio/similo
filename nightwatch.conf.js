@@ -54,9 +54,7 @@ module.exports = {
         port: 4444,
         cli_args: {
           'webdriver.chrome.driver': chromedriver.path,
-          'webdriver.edge.driver': 'msedgedriver.exe',
           'webdriver.gecko.driver': geckodriver.path,
-          'webdriver.ie.driver': 'IEDriverServer32.exe'
         }
       },
       // desiredCapabilities: DESIRED_CAPABILITIES_CHROME
